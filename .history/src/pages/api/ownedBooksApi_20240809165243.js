@@ -1,5 +1,5 @@
-
-import { prisma } from '@lib/prismaClient'; // Prisma Client をインポート
+// src/api/ownedBooksApi.js
+import prisma from "@lib/prisma";
 
 // ユーザーが持っている本のデータをデータベースから取得する非同期関数
 export async function fetchOwnedBooks(userId) {

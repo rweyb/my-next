@@ -22,31 +22,30 @@ const API_KEY = process.env.NEXT_PUBLIC_GOOGLE_API_KEY; // 環境変数からAPI
 
 // エクスポネンシャルバックオフを使ってリクエストを再試行する関数
 const fetchWithBackoff = async (url, retries = 3, delay = 1000) => {
-  try {
-      const fullUrl = `${url}&key=${API_KEY}`;
-      const res = await fetch(fullUrl);
+    try {
+        const fullUrl = `${url}&key=${API_KEY}`; // APIキーをURLに追加
+        const res = await fetch(fullUrl);
 
-      if (res.status === 429) { // レート制限エラーの場合
-          if (retries > 0) {
-              console.warn("リクエスト制限に達しました。再試行します。");
-              await new Promise(resolve => setTimeout(resolve, delay));
-              return fetchWithBackoff(url, retries - 1, delay * 2); // 再試行
-          } else {
-              throw new Error("リクエスト制限に達しました。再試行回数を超えました。");
-          }
-      }
-      
-      if (!res.ok) {
-          throw new Error(`HTTP error! status: ${res.status}`);
-      }
+        if (res.status === 429) { // レート制限エラーの場合
+            if (retries > 0) {
+                console.warn("リクエスト制限に達しました。再試行します。");
+                await new Promise(resolve => setTimeout(resolve, delay)); // 指定した遅延後に再試行
+                return fetchWithBackoff(url, retries - 1, delay * 2);
+            } else {
+                throw new Error("リクエスト制限に達しました。再試行回数を超えました。");
+            }
+        }
+        
+        if (!res.ok) {
+            throw new Error(`HTTP error! status: ${res.status}`);
+        }
 
-      return res.json();
-  } catch (error) {
-      console.error("Error fetching data:", error); // エラーを詳細に記録
-      throw error;
-  }
+        return res.json(); // レスポンスをJSON形式で返す
+    } catch (error) {
+        console.error("Error fetching data:", error);
+        throw error;
+    }
 };
-
 
 // 引数keywordをキーにGoogle Books APIから書籍を検索
 export async function getBooksByKeyword(keyword, page = 1, booksPerPage = 10) {
@@ -97,24 +96,15 @@ export async function getBooksByKeyword(keyword, page = 1, booksPerPage = 10) {
     }
   }
   
-  // id値をキーにレビュー情報を取得
-export async function getReviewById(id) {
-  try {
-    return await prisma.review.findUnique({
-        where: { id },
-    });
-} catch (error) {
-    console.error(`Error fetching review by ID ${id}:`, error);
-    return null;
-}
-}
 
 // 全てのレビューを取得
 export async function getAllReviews() {
     try {
         // 読了日(read)降順で取得
         const reviews = await prisma.review.findMany({
-            orderBy: { read: 'desc' },
+            orderBy: {
+                read: 'desc'
+            }
         });
 
         if (reviews.length === 0) {

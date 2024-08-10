@@ -45,44 +45,18 @@ const Bookshelf = () => {
   return (
     <div>
       <h1 className="text-3xl font-bold mb-6">本棚</h1>
-
-      {/* 検索機能 */}
-      <TextField
-        label="書籍を検索"
-        variant="outlined"
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-      />
-      <Button onClick={handleSearch} variant="contained" color="primary">
-        検索
-      </Button>
-
-      {/* 検索結果の表示 */}
       <ul>
-        {searchQuery ? (
-          searchResults.length > 0 ? (
-            searchResults.map(book => (
-              <li key={book.id}>
-                <h2>{book.title}</h2>
-                <p>著者: {book.author}</p>
-                <p>出版社: {book.publisher}</p>
-              </li>
-            ))
-          ) : (
-            <p>検索結果がありません。</p>
-          )
+        {ownedBooks.length > 0 ? (
+          ownedBooks.map(book => (
+            <li key={book.id}>
+              <h2>{book.title}</h2>
+              <p>著者: {book.author}</p>
+              <p>出版社: {book.publisher}</p>
+              {/* ここでその他の書籍情報を表示 */}
+            </li>
+          ))
         ) : (
-          ownedBooks.length > 0 ? (
-            ownedBooks.map(book => (
-              <li key={book.id}>
-                <h2>{book.title}</h2>
-                <p>著者: {book.author}</p>
-                <p>出版社: {book.publisher}</p>
-              </li>
-            ))
-          ) : (
-            <p>本がありません。</p>
-          )
+          <p>本がありません。</p> // 本がない場合の表示
         )}
       </ul>
     </div>

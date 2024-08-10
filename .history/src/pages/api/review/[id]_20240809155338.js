@@ -1,4 +1,7 @@
-import prisma from '@lib/prisma'
+import { PrismaClient } from '@prisma/client';
+
+// PrismaClientのインスタンスを作成
+const prisma = new PrismaClient();
 
 export default async function handler(req, res) {
     const { id } = req.query; // リクエストからレビューのIDを取得

@@ -1,4 +1,3 @@
-// src/pages/api/add-review.js
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();

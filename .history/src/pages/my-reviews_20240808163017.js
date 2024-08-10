@@ -31,6 +31,7 @@ export default function ReviewsPage() {
     fetchData();
   }, [signInUser]);
 
+
   return (
     <div className="p-6 mx-auto max-w-screen-lg">
       <h1 className="text-3xl font-bold mb-6">レビュー一覧</h1>

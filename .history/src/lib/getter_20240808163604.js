@@ -99,14 +99,11 @@ export async function getBooksByKeyword(keyword, page = 1, booksPerPage = 10) {
   
   // id値をキーにレビュー情報を取得
 export async function getReviewById(id) {
-  try {
     return await prisma.review.findUnique({
-        where: { id },
+        where: {
+            id: id
+        }
     });
-} catch (error) {
-    console.error(`Error fetching review by ID ${id}:`, error);
-    return null;
-}
 }
 
 // 全てのレビューを取得
@@ -114,7 +111,9 @@ export async function getAllReviews() {
     try {
         // 読了日(read)降順で取得
         const reviews = await prisma.review.findMany({
-            orderBy: { read: 'desc' },
+            orderBy: {
+                read: 'desc'
+            }
         });
 
         if (reviews.length === 0) {

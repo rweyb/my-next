@@ -26,7 +26,7 @@ export default function EditPage({ params }) {
     fetchBooks();
   }, [params.id]);
 
-  if (!book || !book.title) {
+  if (!book) {
     return <p>Book not found.</p>; // 書籍が見つからない場合のメッセージ
   }
 

@@ -14,14 +14,20 @@ export default function ReviewsPage() {
   const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
+    console.log("signInUser inside useEffect:", signInUser); // デバッグ用ログ
+
     const fetchData = async () => {
       if (signInUser?.uid) {
         try {
-          // APIから全てのレビューを取得
-          const data = await fetchAllReviews();
+          // サインインしているユーザーIDを使ってレビューを取得
+          const response = await fetch(`/api/review?userId=${signInUser.uid}`);
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          const data = await response.json();
           setReviews(data);
         } catch (error) {
-          console.error("Error fetching reviews:", error);
+          console.error("Error fetching data:", error);
         }
       } else {
         console.error("User is not signed in");

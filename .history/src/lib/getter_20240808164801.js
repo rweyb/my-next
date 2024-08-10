@@ -114,7 +114,9 @@ export async function getAllReviews() {
     try {
         // 読了日(read)降順で取得
         const reviews = await prisma.review.findMany({
-            orderBy: { read: 'desc' },
+            orderBy: {
+                read: 'desc'
+            }
         });
 
         if (reviews.length === 0) {
